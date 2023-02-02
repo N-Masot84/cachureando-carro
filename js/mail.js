@@ -33,3 +33,11 @@
 //         alert("your message sent successfully");
 //     })
 //     .catch((err)=> console.log(err));
+
+
+function EnviarCorreo(){
+    var params = boletaHTML;
+    emailjs.send("service_ueyep5p", "template_bwcuqca", params).then(function (res) {
+        console.log('Mail enviado' + res.status);
+    });
+}

@@ -19,6 +19,8 @@ const getTotalWithoutTax = (productsInCart) => {
     return value;
 }
 
+// Send Email
+
 
 /**
  * Total con impuestos
@@ -80,8 +82,8 @@ const getTotal = (totalSinImpuesto, Impuesto, Comision) => {
 }
 
 
-function getProductsListCart(productList){
-    const productHtmlArray = productList.map( (product) => {
+function getProductsListCart(productList) {
+    const productHtmlArray = productList.map((product) => {
         return `
             <li>
                 <img src="${product.imagen}" class="cart-image" alt="Image ${product.nombre}">
@@ -111,7 +113,7 @@ var contadorProductos = 0;
 $(document).ready(function () {
 
     // acciones de los botones anadir al carro 
-    $('.product-block .add-button').click( function() {
+    $('.product-block .add-button').click(function () {
         //console.log('boton anadir', this);
         //console.log('boton anadir', $(this));
         // console.log('info', $(this).attr('info'));
@@ -158,7 +160,7 @@ $(document).ready(function () {
         const totalNeto = getTotalWithoutTax(productsInCart);
         const iva = getTax(productsInCart);
         const total = getTotalWithTax(productsInCart);
-        
+
 
         // console.log('totalNeto', totalNeto);
         console.log('iva', iva);
@@ -169,7 +171,7 @@ $(document).ready(function () {
         $("#total").html(total);
         $("#shipping").html(getShippingCost(total));
         $("#total-with-shipping").html(total + getShippingCost(total));
-        
+
         const productsInCartHTML = getProductsListCart(productsInCart);
         //console.log('productsInCartHTML', productsInCartHTML.join('\n'));
         $("#totalizador .item-list").html(productsInCartHTML.join('\n'));
@@ -179,7 +181,7 @@ $(document).ready(function () {
         $("#cart-qty").html(contadorProductos);
 
         // Add event to remove button
-        $('#totalizador .cart-remove').click( function() {
+        $('#totalizador .cart-remove').click(function () {
 
             //console.log('uuid elemento', $(this).attr('uuid'));
 
@@ -197,10 +199,10 @@ $(document).ready(function () {
 
             // remover al padre
             $(this).parent().remove();
-            
+
             // // Reconstruye el html del totalizador
             // const productsInCartHTML = getProductsListCart(productsInCart);
-    
+
             // //console.log('productsInCartHTML', productsInCartHTML.join('\n'));
             // $("#totalizador .item-list").html(productsInCartHTML.join('\n'));
 
@@ -208,7 +210,7 @@ $(document).ready(function () {
             $("#total-neto").html(getTotalWithoutTax(productsInCart));
             $("#iva").html(getTax(productsInCart));
             $("#total").html(getTotalWithTax(productsInCart));
-            
+
             $("#shipping").html(getShippingCost(getTotalWithTax(productsInCart)));
             $("#total-with-shipping").html(getTotalWithTax(productsInCart) + getShippingCost(total));
 
@@ -224,7 +226,7 @@ $(document).ready(function () {
         $("#totalizador").toggle()
 
     });
-    
+
 });
 
 
@@ -267,7 +269,7 @@ document.getElementById("products").innerHTML = productsHTML;
 const confirmCart = (event) => {
     event.preventDefault();
     console.log('form submit confirm Cart');
-    
+
     // Valores requeridos por la boleta
     console.log('fullname', event.target.elements.fullname.value);
     console.log('email', event.target.elements.email.value);
@@ -305,7 +307,7 @@ const confirmCart = (event) => {
                 <td class="total">$${product.precio * product.cantidad}</td>
             </tr>
         `;
-    }); 
+    });
     console.log('productTableRows', productTableRows)
     $('#invoice-products').append(productTableRows);
 
@@ -355,7 +357,7 @@ const confirmCart = (event) => {
     $('#shopping').hide();
     $('footer').hide();
     $('.modal-backdrop').hide();
-    
+
     //show invoice
     $('#invoice').show();
     //modal issues
@@ -395,7 +397,7 @@ const confirmCart = (event) => {
             </thead>
             <tbody id="invoice-products">
             ${productsInCart.map((product) => {
-                return `
+        return `
                     <tr>
                         <td class="code">${product.codigo}</td>
                         <td class="desc">${product.nombre}</td>
@@ -404,7 +406,7 @@ const confirmCart = (event) => {
                         <td class="total">$${product.precio * product.cantidad}</td>
                     </tr>
                 `;
-            })}
+    })}
 
                 <tr>
                 <td colspan="4">Total sin impuesto</td>
@@ -436,12 +438,13 @@ const confirmCart = (event) => {
         </div>
     </main>
     `;
-
-    // Send Email
-    function EnviarCorreo(){
-        var params = boletaHTML;
+    function EnviarCorreo() {
+        var params = {
+            fullname : boletaHTML
+        }
         emailjs.send("service_ueyep5p", "template_bwcuqca", params).then(function (res) {
             console.log('Mail enviado' + res.status);
         });
-}
+    }
+    EnviarCorreo();
 }
