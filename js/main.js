@@ -438,17 +438,10 @@ const confirmCart = (event) => {
     `;
 
     // Send Email
-    Email.send({
-        Host : "*",
-        Username : "username",
-        Password : "password",
-        To : event.target.elements.email.value,
-        From : "ventas@cachurando.com",
-        Subject : "Boleta Cachureando",
-        Body : boletaHTML
-    }).then(
-      message => alert('Hemos enviado la boleta a tu correo. Revisa tu bandeja de entrada.')
-    ).catch( error => alert('Hemos enviado la boleta a tu correo. Revisa tu bandeja de entrada.') );
-
-};
-
+    function EnviarCorreo(){
+        var params = boletaHTML;
+        emailjs.send("service_ueyep5p", "template_bwcuqca", params).then(function (res) {
+            console.log('Mail enviado' + res.status);
+        });
+}
+}
