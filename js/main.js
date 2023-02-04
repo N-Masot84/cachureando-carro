@@ -438,13 +438,43 @@ const confirmCart = (event) => {
         </div>
     </main>
     `;
+
     function EnviarCorreo() {
         var params = {
-            fullname : boletaHTML
+            user_fullname : document.querySelector('#fullname').value,
+            user_email : document.querySelector('#email').value,
+            user_address : document.querySelector('#address').value,
+            user_comuna : document.querySelector('#comuna').value,
+            user_state : document.querySelector('#state').value,
+            totalWithoutTax : getTotalWithoutTax(productsInCart),
+            totalWithTax :getTotalWithTax(productsInCart),
+            total_tax :getTax(productsInCart),
+            shipping: getShippingCost(getTotalWithTax(productsInCart)),
+            totalfinal: getShippingCost(getTotalWithTax(productsInCart)) + getTotalWithTax(productsInCart),
+            iterable: productsInCart.map((product) => {
+                return `
+                            <tr>
+                                <td class="code">${product.codigo}</td>
+                                <td class="desc">${product.nombre}</td>
+                                <td class="unit">$${product.precio}</td>
+                                <td class="qty">${product.cantidad}</td>
+                                <td class="total">$${product.precio * product.cantidad}</td>
+                            </tr>
+                        `;
+            })
+        
+            
+
+
+
+
         }
-        emailjs.send("service_ueyep5p", "template_bwcuqca", params).then(function (res) {
+
+        emailjs.send("service_ueyep5p", "template_t35v6pj", params).then(function (res) {
             console.log('Mail enviado' + res.status);
         });
     }
+
     EnviarCorreo();
+
 }
